@@ -2,8 +2,9 @@
 
 Live demo: **https://sygad.github.io/navbar-card-demo/**
 
-A browser demo of three options proposed for
-[navbar-card](https://github.com/joseluis9595/lovelace-navbar-card), the
+A browser demo of three options proposed in
+[pull request #343](https://github.com/joseluis9595/lovelace-navbar-card/pull/343)
+for [navbar-card](https://github.com/joseluis9595/lovelace-navbar-card), the
 navigation bar for Home Assistant dashboards. It runs the real card, built from
 the proposal branch, inside a mock dashboard, so it works without a Home
 Assistant install.
