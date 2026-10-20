@@ -1,0 +1,20 @@
+<!doctype html>
+<!--
+  GitHub Pages serves this for any unknown path. The demo's views live at
+  <site>/app/<view>, so reloading or sharing one lands here: hand it to the
+  real app page, which reads the view from the path.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <script>
+      const [base, view] = location.pathname.split('/app/');
+      if (view !== undefined) {
+        sessionStorage.setItem('navbar-demo-view', view);
+        location.replace(`${base}/app.html`);
+      } else {
+        location.replace(`${base.replace(/[^/]*$/, '')}`);
+      }
+    </script>
+  </head>
+</html>

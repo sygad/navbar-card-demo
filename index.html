@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Navbar card: scrolling, auto-hide and panel menus</title>
+    <meta
+      name="description"
+      content="Live demo of proposed navbar-card options for Home Assistant: a scrolling bar that keeps the selected route centred, auto-hide on scroll, and panel-style popup menus." />
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #f4f6f8;
+        --surface: #ffffff;
+        --text: #1d2129;
+        --muted: #5b6370;
+        --line: #dde1e6;
+        --accent: #0288d1;
+        --accent-soft: #e1f2fb;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #111316;
+          --surface: #1b1e23;
+          --text: #e7e9ec;
+          --muted: #9aa2ad;
+          --line: #2c3138;
+          --accent: #4fc3f7;
+          --accent-soft: #10303f;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font: 15px/1.55 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      }
+      .page {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 32px 16px 64px;
+      }
+      h1 {
+        margin: 0 0 6px;
+        font-size: 28px;
+        line-height: 1.2;
+      }
+      .lede {
+        margin: 0 0 28px;
+        color: var(--muted);
+        max-width: 70ch;
+      }
+      .layout {
+        display: grid;
+        grid-template-columns: 400px 1fr;
+        gap: 40px;
+        align-items: start;
+      }
+      @media (max-width: 860px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* Phone */
+      .phone {
+        position: sticky;
+        top: 24px;
+        justify-self: center;
+        width: 396px;
+        max-width: 100%;
+        padding: 12px;
+        border-radius: 52px;
+        background: linear-gradient(160deg, #3d4450, #1d2128);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+      }
+      .phone iframe {
+        display: block;
+        width: 100%;
+        height: 760px;
+        max-height: calc(100vh - 80px);
+        border: 0;
+        border-radius: 40px;
+        background: #fafafa;
+      }
+      @media (max-width: 860px) {
+        .phone {
+          position: static;
+        }
+        .phone iframe {
+          height: 640px;
+        }
+      }
+      .fullscreen {
+        display: block;
+        margin-top: 12px;
+        text-align: center;
+        font-size: 14px;
+      }
+
+      /* Controls */
+      .panel {
+        padding: 20px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: var(--surface);
+      }
+      .panel + .panel {
+        margin-top: 16px;
+      }
+      .panel h2 {
+        margin: 0 0 4px;
+        font-size: 17px;
+      }
+      .panel p {
+        margin: 0 0 12px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .option code {
+        font-size: 13px;
+      }
+      .seg {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .seg button {
+        min-height: 40px;
+        padding: 0 14px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: transparent;
+        color: var(--text);
+        font: inherit;
+        cursor: pointer;
+      }
+      .seg button[aria-pressed='true'] {
+        border-color: var(--accent);
+        background: var(--accent-soft);
+        color: var(--accent);
+        font-weight: 600;
+      }
+      pre {
+        margin: 0;
+        padding: 14px 16px;
+        overflow-x: auto;
+        border-radius: 12px;
+        background: var(--bg);
+        font: 13px/1.5 ui-monospace, 'SF Mono', Menlo, monospace;
+      }
+      a {
+        color: var(--accent);
+      }
+      .links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 18px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      footer {
+        margin-top: 40px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <h1>Navbar card: scrolling, auto-hide and panel menus</h1>
+      <p class="lede">
+        A live demo of three options proposed for
+        <a href="https://github.com/joseluis9595/lovelace-navbar-card">navbar-card</a>,
+        the Home Assistant navigation bar. The phone runs the real card build
+        from the proposal. Tap around, scroll the page, and flip the options
+        to compare.
+      </p>
+
+      <div class="layout">
+        <div>
+          <div class="phone">
+            <iframe id="app" src="app.html" title="Demo dashboard with navbar-card"></iframe>
+          </div>
+          <a class="fullscreen" href="app.html">Open the demo full screen (best on a phone)</a>
+        </div>
+
+        <div>
+          <section class="panel option">
+            <h2>Scrollable bar <code>mobile.scrollable</code></h2>
+            <p>
+              More routes than fit: swipe the bar sideways. Opening a page keeps
+              its route centred, and the edges fade while there is more to
+              scroll.
+            </p>
+            <div class="seg" data-option="scrollable">
+              <button type="button" data-value="true">On</button>
+              <button type="button" data-value="false">Off</button>
+            </div>
+          </section>
+
+          <section class="panel option">
+            <h2>Auto-hide <code>mobile.autohide</code></h2>
+            <p>
+              <b>Slide</b> moves the bar off screen while you scroll down
+              (Material). <b>Minimize</b> shrinks it to a pill showing the
+              current page (iOS 26); tap the pill to expand.
+              <b>Toggle</b> adds an arrow tab to fold the bar away by hand.
+            </p>
+            <div class="seg" data-option="autohide">
+              <button type="button" data-value="off">Off</button>
+              <button type="button" data-value="slide">Slide</button>
+              <button type="button" data-value="minimize">Minimize</button>
+              <button type="button" data-value="toggle">Toggle</button>
+            </div>
+          </section>
+
+          <section class="panel option">
+            <h2>Popup style <code>layout.popup_style</code></h2>
+            <p>
+              <b>Panel</b> shows a popup menu as one list of icon and label
+              rows, with a light dim that leaves the bar usable. Try
+              <b>More</b> in the bar.
+            </p>
+            <div class="seg" data-option="popup_style">
+              <button type="button" data-value="bubbles">Bubbles</button>
+              <button type="button" data-value="panel">Panel</button>
+            </div>
+          </section>
+
+          <section class="panel option">
+            <h2>Mobile mode <code>mobile.mode</code></h2>
+            <p>Existing option, here to check the new ones work with both.</p>
+            <div class="seg" data-option="mode">
+              <button type="button" data-value="docked">Docked</button>
+              <button type="button" data-value="floating">Floating</button>
+            </div>
+          </section>
+
+          <section class="panel">
+            <h2>Configuration</h2>
+            <p>The options currently shown, as card YAML.</p>
+            <pre id="yaml"></pre>
+          </section>
+
+          <section class="panel">
+            <h2>Links</h2>
+            <ul class="links">
+              <li><a href="https://github.com/joseluis9595/lovelace-navbar-card">navbar-card</a></li>
+              <li><a id="pr-link" href="https://github.com/joseluis9595/lovelace-navbar-card/pulls">Pull request</a></li>
+              <li><a href="https://github.com/sygad/lovelace-navbar-card/tree/feature/scrollable-autohide-popup-panel">Source branch</a></li>
+              <li><a href="https://github.com/sygad/navbar-card-demo">This demo's source</a></li>
+            </ul>
+          </section>
+        </div>
+      </div>
+
+      <footer>
+        Demo by <a href="https://github.com/sygad">sygad</a>. navbar-card is by
+        <a href="https://github.com/joseluis9595">joseluis9595</a> (MIT). The
+        dashboard around the bar is a static mock-up; nothing connects to a
+        Home Assistant.
+      </footer>
+    </div>
+
+    <script>
+      const DEFAULTS = {
+        autohide: 'minimize',
+        mode: 'docked',
+        popup_style: 'panel',
+        scrollable: true,
+      };
+      const KEY = 'navbar-demo-options';
+      const frame = document.querySelector('#app');
+
+      let options = { ...DEFAULTS };
+      try {
+        options = { ...DEFAULTS, ...JSON.parse(localStorage.getItem(KEY) ?? '{}') };
+      } catch {}
+
+      const yaml = () =>
+        [
+          'type: custom:navbar-card',
+          'mobile:',
+          `  scrollable: ${options.scrollable}`,
+          `  autohide: ${options.autohide === 'off' ? 'false' : options.autohide}`,
+          `  mode: ${options.mode}`,
+          'layout:',
+          `  popup_style: ${options.popup_style}`,
+          'routes:',
+          '  # ...',
+        ].join('\n');
+
+      const render = () => {
+        for (const group of document.querySelectorAll('[data-option]')) {
+          const current = String(options[group.dataset.option]);
+          for (const button of group.querySelectorAll('button')) {
+            button.setAttribute('aria-pressed', String(button.dataset.value === current));
+          }
+        }
+        document.querySelector('#yaml').textContent = yaml();
+      };
+
+      const send = () =>
+        frame.contentWindow?.postMessage(
+          { options, type: 'navbar-demo-options' },
+          location.origin,
+        );
+
+      document.addEventListener('click', event => {
+        const button = event.target.closest('[data-option] button');
+        if (!button) return;
+        const key = button.closest('[data-option]').dataset.option;
+        const raw = button.dataset.value;
+        options[key] = raw === 'true' ? true : raw === 'false' ? false : raw;
+        render();
+        send();
+      });
+
+      frame.addEventListener('load', send);
+      render();
+    </script>
+  </body>
+</html>

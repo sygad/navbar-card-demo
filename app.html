@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>navbar-card demo</title>
+    <style>
+      /* Home Assistant's default theme variables, light and dark */
+      :root {
+        color-scheme: light dark;
+        --primary-color: #03a9f4;
+        --primary-text-color: #212121;
+        --secondary-text-color: #727272;
+        --text-primary-color: #fff;
+        --card-background-color: #fff;
+        --primary-background-color: #fafafa;
+        --divider-color: rgba(0, 0, 0, 0.12);
+        --state-inactive-color: #727272;
+        --material-shadow-elevation-2dp: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+          0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --primary-text-color: #e1e1e1;
+          --secondary-text-color: #9b9b9b;
+          --card-background-color: #1c1c1c;
+          --primary-background-color: #111111;
+          --divider-color: rgba(225, 225, 225, 0.12);
+          --state-inactive-color: #9b9b9b;
+        }
+      }
+      html,
+      body {
+        margin: 0;
+        background: var(--primary-background-color);
+        color: var(--primary-text-color);
+        font: 14px/1.4 Roboto, system-ui, -apple-system, 'Segoe UI', sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        height: 56px;
+        padding: 0 16px;
+        background: var(--card-background-color);
+        border-bottom: 1px solid var(--divider-color);
+        font-size: 20px;
+      }
+      main {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 8px 12px 120px;
+      }
+      h2 {
+        margin: 20px 4px 8px;
+        font-size: 16px;
+        font-weight: 500;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 8px;
+      }
+      .tile {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        min-height: 56px;
+        padding: 8px 10px;
+        border-radius: 12px;
+        background: var(--card-background-color);
+        border: 1px solid var(--divider-color);
+      }
+      .tile-icon {
+        display: grid;
+        place-items: center;
+        width: 36px;
+        height: 36px;
+        flex: none;
+        border-radius: 50%;
+        background: color-mix(in srgb, var(--state-inactive-color) 18%, transparent);
+        color: var(--state-inactive-color);
+        --mdc-icon-size: 22px;
+      }
+      .tile.on .tile-icon {
+        background: color-mix(in srgb, #ff9800 22%, transparent);
+        color: #ff9800;
+      }
+      .tile b {
+        display: block;
+        font-weight: 500;
+      }
+      .tile small {
+        color: var(--secondary-text-color);
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title">Home</header>
+    <main id="view"></main>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
